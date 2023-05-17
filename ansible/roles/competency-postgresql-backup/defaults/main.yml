@@ -1,0 +1,5 @@
+postgresql_backup_dir: /tmp/postgresql-backup
+postgresql_user: postgres
+
+cloud_storage_postgresqlbackup_bucketname: "{{ cloud_storage_management_bucketname }}"
+cloud_storage_postgresqlbackup_foldername: competency-postgresqil-backup
