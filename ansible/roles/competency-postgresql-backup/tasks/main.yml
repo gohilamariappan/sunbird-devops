@@ -9,7 +9,7 @@
     
     
 - name: Save backup
-  command: bash -lc "docker exec {{ postgres_container_name }} pg_dump  | gzip > {{ postgresql_backup_gzip_file_path }}"
+  command: bash -lc " docker exec postgres_db_1 pg_dumpall -U postgres | gzip > {{ postgresql_backup_gzip_file_path }}"
   become_user: "{{ postgresql_user }}"
   async: 3600
   poll: 10
