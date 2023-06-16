@@ -15,9 +15,7 @@
       keycloak_access_token: "{{ x_auth_output.json.access_token }}"
   - debug:
       var: keycloak_access_token
-      
 
-    
 - name: Creating root org
   block:
   - uri:
