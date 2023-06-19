@@ -1,5 +1,24 @@
 ---
 # tasks file for post-install
+- name: Creating X-Auth-Token
+  block:
+  - uri:
+      url: "https://{{domain_name}}/auth/realms/sunbird/protocol/openid-connect/token"
+      method: POST
+      body_format: form-urlencoded
+      body:
+        - [ client_id,lms ]
+        - [ client_secret,"{{ sunbird_sso_client_secret }}" ]
+        - [ grant_type,client_credentials ]
+    register: x_auth_output
+  - set_fact:
+      keycloak_access_token: "{{ x_auth_output.json.access_token }}"
+      sunbird_custodian_org_id: "0138193046778920963"
+  - debug:
+      var: keycloak_access_token
+      var: sunbird_custodian_org_id
+
+
 
 
 - import_tasks: user_org.yaml
