@@ -1,43 +1,6 @@
 ---
-- name: Updating custodian org to system settings
-  uri:
-    url: "https://{{ domain_name }}/api/data/v1/system/settings/set"
-    method: POST
-    headers:
-      x-authenticated-user-token: "{{ keycloak_access_token }}"
-      Authorization: "Bearer {{ core_vault_sunbird_api_auth_token }}"
-    body_format: json
-    body: |-
-      {
-        "request": {{ item }}
-      }
-  with_items: "{{ custodian_org_data }}"
 
-- name: Restarting leaner service
-  shell: |
-    kubectl rollout restart deployment -n {{ namespace }} learner
-    kubectl rollout status deployment -n {{ namespace }} learner
 
-- name: Crating Users
-  uri:
-    url: "https://{{ domain_name }}/api/user/v2/signup"
-    method: POST
-    headers:
-      Authorization: "Bearer {{ core_vault_sunbird_api_auth_token }}"
-    body_format: json
-    body: |-
-      {
-        "request": {{ item }}
-      }
-  with_items: "{{ default_user_details }}"
-  register: user_list
-
-- name: Assigning roles to user
-  debug:
-    msg: "{{ item.json.result.userId }}"
-  with_items: "{{ user_list.results }}"
-  loop_control:
-    label: "{{ item.item.email }}"
 
 - name: Assigning roles to user
   uri:
@@ -50,7 +13,7 @@
     body: |-
      {
         "request": {
-          "userId": "{{ item.json.result.userId }}",
+          "userId": "1e596cc9-9172-4460-9e33-ad93bce369d4",
           "roles": [
             {
               "role": "ORG_ADMIN",
@@ -129,78 +92,6 @@
             }]
       }
      }
-  with_items: "{{ user_list.results }}"
-  loop_control:
-    label: "{{ item.item.email }}"
+  
 
-- name: Crating state
-  block:
-  - name: Creating state
-    uri:
-      url: "https://{{ domain_name }}/api/data/v1/location/create"
-      method: POST
-      headers:
-        x-authenticated-user-token: "{{ keycloak_access_token }}"
-        Authorization: "Bearer {{ core_vault_sunbird_api_auth_token }}"
-      body_format: json
-      body: |-
-        {
-          "request": {{ location_data.state }}
-        }
-    register: state_output
-  - set_fact:
-      state_id: "{{ state_output.json.result.id }}"
 
-- name: Crating District
-  block:
-  - name: Crating District
-    uri:
-      url: "https://{{ domain_name }}/api/data/v1/location/create"
-      method: POST
-      headers:
-        x-authenticated-user-token: "{{ keycloak_access_token }}"
-        Authorization: "Bearer {{ core_vault_sunbird_api_auth_token }}"
-      body_format: json
-      body: |-
-        {
-          "request": {{ location_data.district }}
-        }
-    register: district_output
-  - set_fact:
-      district_id: "{{ district_output.json.result.id }}"
-
-- name: Crating block
-  block:
-  - name: Crating block
-    uri:
-      url: "https://{{ domain_name }}/api/data/v1/location/create"
-      method: POST
-      headers:
-        x-authenticated-user-token: "{{ keycloak_access_token }}"
-        Authorization: "Bearer {{ core_vault_sunbird_api_auth_token }}"
-      body_format: json
-      body: |-
-        {
-          "request": {{ location_data.block }}
-        }
-    register: block_output
-  - set_fact:
-      block_id: "{{ block_output.json.result.id }}"
-
-- name: Crating cluster
-  block:
-  - name: Crating cluster
-    uri:
-      url: "https://{{ domain_name }}/api/data/v1/location/create"
-      method: POST
-      headers:
-        x-authenticated-user-token: "{{ keycloak_access_token }}"
-        Authorization: "Bearer {{ core_vault_sunbird_api_auth_token }}"
-      body_format: json
-      body: |-
-        {
-          "request": {{ location_data.cluster }}
-        }
-    register: cluster_output
-  - set_fact:
-      cluster_id: "{{ cluster_output.json.result.id }}"
