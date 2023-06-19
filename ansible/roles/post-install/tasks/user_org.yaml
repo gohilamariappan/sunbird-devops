@@ -13,7 +13,7 @@
     body: |-
      {
         "request": {
-          "userId": "1e596cc9-9172-4460-9e33-ad93bce369d4",
+          "userId": "04dffd92-d478-4848-ac96-16314e64aa7a",
           "roles": [
             {
               "role": "ORG_ADMIN",
