@@ -1,12 +1,12 @@
 ---
-- name: start keycloak service
-  debug: msg="starting keycloak"
-  notify:
-    - start service
-    - wait for keycloak to start
-  changed_when: true
+#- name: start keycloak service
+ # debug: msg="starting keycloak"
+  #notify:
+  #  - start service
+ #   - wait for keycloak to start
+  #changed_when: true
 
-- meta: flush_handlers
+#- meta: flush_handlers
 
 - name: Create admin user
   become_user: "{{ wildfly_user }}"
