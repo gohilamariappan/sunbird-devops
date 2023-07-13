@@ -13,10 +13,8 @@
     register: x_auth_output
   - set_fact:
       keycloak_access_token: "{{ x_auth_output.json.access_token }}"
-      sunbird_custodian_org_id: "0138193046778920963"
   - debug:
       var: keycloak_access_token
-      var: sunbird_custodian_org_id
 
 
 
