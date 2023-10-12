@@ -11,8 +11,8 @@
 
 - name: rename template
   template:
-    src: "/var/lib/jenkins/workspace/Deploy/dev/Kubernetes/nginx-public-ingress/kubernetes/helm_charts/core/nginx-public-ingress/values.j2"
-    dest: "/var/lib/jenkins/workspace/Deploy/dev/Kubernetes/nginx-public-ingress/kubernetes/helm_charts/core/nginx-public-ingress/values.yaml"
+    src: "{{ chart_path }}/values.j2"
+    dest: "{{ chart_path }}/values.yaml"
 
 - name: template schema json
   template:
