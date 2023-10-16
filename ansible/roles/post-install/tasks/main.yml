@@ -13,9 +13,11 @@
     register: x_auth_output
   - set_fact:
       keycloak_access_token: "{{ x_auth_output.json.access_token }}"
+      sunbird_custodian_org_id: "{{cust_id}}"
   - debug:
       var: keycloak_access_token
+      var: sunbird_custodian_org_id
 
 
 
-
+- import_tasks: knowledge_platform_tasks.yaml
